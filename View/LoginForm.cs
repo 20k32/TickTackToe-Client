@@ -35,9 +35,9 @@ namespace TickTackToe.View
             await _presenter.LoginAsync(userNameTextBlock.Text, userPasswordMaskedTextBlock.Text);
         }
 
-        private void statusValueLabel_Click(object sender, EventArgs e)
+        private async void registerButton_Click(object sender, EventArgs e)
         {
-
+            await _presenter.RegisterAsync(userNameTextBlock.Text, userPasswordMaskedTextBlock.Text);
         }
     }
 }

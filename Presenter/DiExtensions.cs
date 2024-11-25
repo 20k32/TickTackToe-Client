@@ -24,6 +24,9 @@ namespace TickTackToe.Presenter
                 .AddSingleton<StatsFormPresenter>()
                 .AddSingleton<GameFormPresenter>()
                 .AddSingleton<LoginFormPresenter>();
+
+            //models
+            collection.AddTransient<GameCore>();
         }
 
         public static void ConfigureApp(this IServiceCollection collection)

@@ -18,7 +18,7 @@ namespace TickTackToe
             this.PaletteMode = PaletteMode.Microsoft365Black;
             TitleStyle = KryptonFormTitleStyle.Modern;
             FormTitleAlign = PaletteRelativeAlign.Center;
-            
+
             _presenter = provider.GetService<MainFormPresenter>();
             _presenter.SetLogTextBox(logRichTextBox);
             _presenter.SetLogListBox(logListBox);
@@ -37,6 +37,11 @@ namespace TickTackToe
         private void OnLoginButtonClick(object sender, EventArgs e)
         {
             _presenter.ShowLogin();
+        }
+
+        private void playButton_Click(object sender, EventArgs e)
+        {
+            _presenter.ShowGameForm();
         }
     }
 }

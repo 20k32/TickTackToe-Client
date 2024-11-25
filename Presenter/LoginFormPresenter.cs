@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace TickTackToe.Presenter
 
         public override void OnClosed(object sender, FormClosedEventArgs e)
         {
-            cts.Cancel();
+            cts?.Cancel();
 
             var form = (KryptonForm)sender;
             form.Load -= OnLoaded;
@@ -66,7 +67,34 @@ namespace TickTackToe.Presenter
             }
             catch (TaskCanceledException ex) { }
 
-            
+        }
+
+        public async Task RegisterAsync(string userName, string password)
+        {
+            statusValueLabel.Text = "Loading...";
+            if (cts is not null)
+            {
+                cts.Cancel();
+            }
+
+            cts = new();
+            var userAuthRequest = new UserAuthRequest(userName, password);
+            try
+            {
+                var responce = await ApiHelper.SendRegisterRequestAsync(userAuthRequest, cts);
+
+                if (!cts.IsCancellationRequested)
+                {
+                    if (responce.StatusCode == 200)
+                    {
+                        UserManager.Jwt = responce.Token;
+                        UserManager.UserName = userName;
+                    }
+
+                    statusValueLabel.Text = responce.Message;
+                }
+            }
+            catch (TaskCanceledException ex) { }
         }
     }
 }

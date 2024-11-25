@@ -148,6 +148,7 @@ namespace TickTackToe
             playButton.TabIndex = 0;
             playButton.Values.DropDownArrowColor = Color.Empty;
             playButton.Values.Text = "Play";
+            playButton.Click += playButton_Click;
             // 
             // logListBox
             // 

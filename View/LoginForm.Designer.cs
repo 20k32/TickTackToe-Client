@@ -32,9 +32,8 @@
             kryptonLabel2 = new Krypton.Toolkit.KryptonLabel();
             userNameTextBlock = new Krypton.Toolkit.KryptonTextBox();
             userPasswordMaskedTextBlock = new Krypton.Toolkit.KryptonMaskedTextBox();
-            cancelButton = new Krypton.Toolkit.KryptonButton();
             loginButton = new Krypton.Toolkit.KryptonButton();
-            kryptonButton1 = new Krypton.Toolkit.KryptonButton();
+            registerButton = new Krypton.Toolkit.KryptonButton();
             statusLabel = new Krypton.Toolkit.KryptonLabel();
             statusValueLabel = new Krypton.Toolkit.KryptonWrapLabel();
             SuspendLayout();
@@ -69,15 +68,6 @@
             userPasswordMaskedTextBlock.Size = new Size(100, 23);
             userPasswordMaskedTextBlock.TabIndex = 3;
             // 
-            // cancelButton
-            // 
-            cancelButton.Location = new Point(255, 235);
-            cancelButton.Name = "cancelButton";
-            cancelButton.Size = new Size(90, 56);
-            cancelButton.TabIndex = 4;
-            cancelButton.Values.DropDownArrowColor = Color.Empty;
-            cancelButton.Values.Text = "Cancel";
-            // 
             // loginButton
             // 
             loginButton.Location = new Point(151, 235);
@@ -88,18 +78,19 @@
             loginButton.Values.Text = "Login";
             loginButton.Click += loginButton_Click;
             // 
-            // kryptonButton1
+            // registerButton
             // 
-            kryptonButton1.Location = new Point(151, 266);
-            kryptonButton1.Name = "kryptonButton1";
-            kryptonButton1.Size = new Size(90, 25);
-            kryptonButton1.TabIndex = 6;
-            kryptonButton1.Values.DropDownArrowColor = Color.Empty;
-            kryptonButton1.Values.Text = "Register";
+            registerButton.Location = new Point(255, 235);
+            registerButton.Name = "registerButton";
+            registerButton.Size = new Size(90, 25);
+            registerButton.TabIndex = 6;
+            registerButton.Values.DropDownArrowColor = Color.Empty;
+            registerButton.Values.Text = "Register";
+            registerButton.Click += registerButton_Click;
             // 
             // statusLabel
             // 
-            statusLabel.Location = new Point(194, 313);
+            statusLabel.Location = new Point(151, 277);
             statusLabel.Name = "statusLabel";
             statusLabel.Size = new Size(47, 20);
             statusLabel.TabIndex = 7;
@@ -111,7 +102,7 @@
             statusValueLabel.Font = new Font("Segoe UI", 9F);
             statusValueLabel.ForeColor = Color.FromArgb(30, 57, 91);
             statusValueLabel.LabelStyle = Krypton.Toolkit.LabelStyle.AlternateControl;
-            statusValueLabel.Location = new Point(255, 313);
+            statusValueLabel.Location = new Point(255, 277);
             statusValueLabel.MaximumSize = new Size(200, 100);
             statusValueLabel.MinimumSize = new Size(200, 100);
             statusValueLabel.Name = "statusValueLabel";
@@ -124,9 +115,8 @@
             ClientSize = new Size(484, 461);
             Controls.Add(statusValueLabel);
             Controls.Add(statusLabel);
-            Controls.Add(kryptonButton1);
+            Controls.Add(registerButton);
             Controls.Add(loginButton);
-            Controls.Add(cancelButton);
             Controls.Add(userPasswordMaskedTextBlock);
             Controls.Add(userNameTextBlock);
             Controls.Add(kryptonLabel2);
@@ -148,10 +138,10 @@
         private Krypton.Toolkit.KryptonLabel kryptonLabel2;
         private Krypton.Toolkit.KryptonTextBox userNameTextBlock;
         private Krypton.Toolkit.KryptonMaskedTextBox userPasswordMaskedTextBlock;
-        private Krypton.Toolkit.KryptonButton cancelButton;
         private Krypton.Toolkit.KryptonButton loginButton;
         private Krypton.Toolkit.KryptonButton kryptonButton1;
         private Krypton.Toolkit.KryptonLabel statusLabel;
         private Krypton.Toolkit.KryptonWrapLabel statusValueLabel;
+        private Krypton.Toolkit.KryptonButton registerButton;
     }
 }

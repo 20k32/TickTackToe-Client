@@ -34,9 +34,9 @@ namespace TickTackToe.Presenter
             {
                 _logTextBox.Text += "Anonymous, please, register or log in to play.";
                 
-                _logListbox.Enabled = false;
-                _playButton.Enabled = false;
-                _showStatsButton.Enabled = false;
+                //_logListbox.Enabled = false;
+                //_playButton.Enabled = false;
+                //_showStatsButton.Enabled = false;
             }
             else
             {
@@ -75,6 +75,12 @@ namespace TickTackToe.Presenter
             {
                 LoadUIState();
             }
+        }
+
+        public void ShowGameForm()
+        {
+            var gameForm = ServiceProvider.GetService<GameForm>();
+            gameForm.ShowDialog(_mainForm);
         }
     }
 }

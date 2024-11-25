@@ -34,11 +34,12 @@ namespace TickTackToe
             kryptonCustomPaletteBase1 = new Krypton.Toolkit.KryptonCustomPaletteBase(components);
             kryptonTableLayoutPanel1 = new Krypton.Toolkit.KryptonTableLayoutPanel();
             kryptonTableLayoutPanel3 = new Krypton.Toolkit.KryptonTableLayoutPanel();
-            kryptonButton4 = new Krypton.Toolkit.KryptonButton();
+            showInfoButton = new Krypton.Toolkit.KryptonButton();
+            logRichTextBox = new Krypton.Toolkit.KryptonRichTextBox();
             kryptonPanel1 = new Krypton.Toolkit.KryptonPanel();
             showStatsButton = new Krypton.Toolkit.KryptonButton();
-            kryptonButton1 = new Krypton.Toolkit.KryptonButton();
-            kryptonListBox1 = new Krypton.Toolkit.KryptonListBox();
+            playButton = new Krypton.Toolkit.KryptonButton();
+            logListBox = new Krypton.Toolkit.KryptonListBox();
             kryptonTableLayoutPanel2 = new Krypton.Toolkit.KryptonTableLayoutPanel();
             loginButton = new Krypton.Toolkit.KryptonButton();
             kryptonTableLayoutPanel1.SuspendLayout();
@@ -63,7 +64,7 @@ namespace TickTackToe
             kryptonTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 58.3333321F));
             kryptonTableLayoutPanel1.Controls.Add(kryptonTableLayoutPanel3, 0, 1);
             kryptonTableLayoutPanel1.Controls.Add(kryptonPanel1, 0, 0);
-            kryptonTableLayoutPanel1.Controls.Add(kryptonListBox1, 1, 1);
+            kryptonTableLayoutPanel1.Controls.Add(logListBox, 1, 1);
             kryptonTableLayoutPanel1.Controls.Add(kryptonTableLayoutPanel2, 1, 0);
             kryptonTableLayoutPanel1.Dock = DockStyle.Fill;
             kryptonTableLayoutPanel1.Location = new Point(0, 0);
@@ -80,7 +81,8 @@ namespace TickTackToe
             kryptonTableLayoutPanel3.BackgroundImageLayout = ImageLayout.None;
             kryptonTableLayoutPanel3.ColumnCount = 1;
             kryptonTableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            kryptonTableLayoutPanel3.Controls.Add(kryptonButton4, 0, 1);
+            kryptonTableLayoutPanel3.Controls.Add(showInfoButton, 0, 1);
+            kryptonTableLayoutPanel3.Controls.Add(logRichTextBox, 0, 0);
             kryptonTableLayoutPanel3.Dock = DockStyle.Fill;
             kryptonTableLayoutPanel3.Location = new Point(3, 159);
             kryptonTableLayoutPanel3.Name = "kryptonTableLayoutPanel3";
@@ -90,23 +92,33 @@ namespace TickTackToe
             kryptonTableLayoutPanel3.Size = new Size(327, 288);
             kryptonTableLayoutPanel3.TabIndex = 11;
             // 
-            // kryptonButton4
+            // showInfoButton
             // 
-            kryptonButton4.Dock = DockStyle.Bottom;
-            kryptonButton4.Location = new Point(3, 205);
-            kryptonButton4.MaximumSize = new Size(80, 80);
-            kryptonButton4.MinimumSize = new Size(80, 80);
-            kryptonButton4.Name = "kryptonButton4";
-            kryptonButton4.Size = new Size(80, 80);
-            kryptonButton4.StateCommon.Border.Rounding = 80F;
-            kryptonButton4.TabIndex = 2;
-            kryptonButton4.Values.DropDownArrowColor = Color.Empty;
-            kryptonButton4.Values.Text = "Info";
+            showInfoButton.Dock = DockStyle.Bottom;
+            showInfoButton.Location = new Point(3, 205);
+            showInfoButton.MaximumSize = new Size(80, 80);
+            showInfoButton.MinimumSize = new Size(80, 80);
+            showInfoButton.Name = "showInfoButton";
+            showInfoButton.Size = new Size(80, 80);
+            showInfoButton.StateCommon.Border.Rounding = 80F;
+            showInfoButton.TabIndex = 2;
+            showInfoButton.Values.DropDownArrowColor = Color.Empty;
+            showInfoButton.Values.Text = "Info";
+            // 
+            // logRichTextBox
+            // 
+            logRichTextBox.Dock = DockStyle.Fill;
+            logRichTextBox.Location = new Point(3, 3);
+            logRichTextBox.Name = "logRichTextBox";
+            logRichTextBox.ReadOnly = true;
+            logRichTextBox.Size = new Size(321, 138);
+            logRichTextBox.TabIndex = 3;
+            logRichTextBox.Text = "";
             // 
             // kryptonPanel1
             // 
             kryptonPanel1.Controls.Add(showStatsButton);
-            kryptonPanel1.Controls.Add(kryptonButton1);
+            kryptonPanel1.Controls.Add(playButton);
             kryptonPanel1.Dock = DockStyle.Fill;
             kryptonPanel1.Location = new Point(0, 0);
             kryptonPanel1.Margin = new Padding(0);
@@ -126,24 +138,24 @@ namespace TickTackToe
             showStatsButton.Values.Text = "Show Stats";
             showStatsButton.Click += OnShowStatsButtonClick;
             // 
-            // kryptonButton1
+            // playButton
             // 
-            kryptonButton1.Dock = DockStyle.Top;
-            kryptonButton1.Location = new Point(0, 0);
-            kryptonButton1.Name = "kryptonButton1";
-            kryptonButton1.Size = new Size(333, 77);
-            kryptonButton1.StateCommon.Border.Rounding = 25F;
-            kryptonButton1.TabIndex = 0;
-            kryptonButton1.Values.DropDownArrowColor = Color.Empty;
-            kryptonButton1.Values.Text = "Play";
+            playButton.Dock = DockStyle.Top;
+            playButton.Location = new Point(0, 0);
+            playButton.Name = "playButton";
+            playButton.Size = new Size(333, 77);
+            playButton.StateCommon.Border.Rounding = 25F;
+            playButton.TabIndex = 0;
+            playButton.Values.DropDownArrowColor = Color.Empty;
+            playButton.Values.Text = "Play";
             // 
-            // kryptonListBox1
+            // logListBox
             // 
-            kryptonListBox1.Dock = DockStyle.Fill;
-            kryptonListBox1.Location = new Point(336, 159);
-            kryptonListBox1.Name = "kryptonListBox1";
-            kryptonListBox1.Size = new Size(461, 288);
-            kryptonListBox1.TabIndex = 7;
+            logListBox.Dock = DockStyle.Fill;
+            logListBox.Location = new Point(336, 159);
+            logListBox.Name = "logListBox";
+            logListBox.Size = new Size(461, 288);
+            logListBox.TabIndex = 7;
             // 
             // kryptonTableLayoutPanel2
             // 
@@ -198,14 +210,15 @@ namespace TickTackToe
 
         #endregion
         private Krypton.Toolkit.KryptonCustomPaletteBase kryptonCustomPaletteBase1;
-        private Krypton.Toolkit.KryptonListBox kryptonListBox1;
+        private Krypton.Toolkit.KryptonListBox logListBox;
         private Krypton.Toolkit.KryptonTableLayoutPanel kryptonTableLayoutPanel1;
         private Krypton.Toolkit.KryptonPanel kryptonPanel1;
         private Krypton.Toolkit.KryptonButton showStatsButton;
-        private Krypton.Toolkit.KryptonButton kryptonButton1;
+        private Krypton.Toolkit.KryptonButton playButton;
         private Krypton.Toolkit.KryptonTableLayoutPanel kryptonTableLayoutPanel2;
         private Krypton.Toolkit.KryptonButton loginButton;
         private Krypton.Toolkit.KryptonTableLayoutPanel kryptonTableLayoutPanel3;
-        private Krypton.Toolkit.KryptonButton kryptonButton4;
+        private Krypton.Toolkit.KryptonButton showInfoButton;
+        private Krypton.Toolkit.KryptonRichTextBox logRichTextBox;
     }
 }

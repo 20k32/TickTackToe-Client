@@ -1,5 +1,7 @@
 using Krypton.Toolkit;
 using Microsoft.Extensions.DependencyInjection;
+using TickTackToe.Model;
+using TickTackToe.Model.Helpers;
 using TickTackToe.Presenter;
 using TickTackToe.View;
 
@@ -21,6 +23,7 @@ namespace TickTackToe
 
             collection.ConfigureServices();
             collection.ConfigureApp();
+            HttpClientHelper.SetBaseAddress(ApiSettings.ApiHttpUrl);
 
             var provider = collection.BuildServiceProvider();
             var mainForm = provider.GetService<MainForm>();

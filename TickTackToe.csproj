@@ -6,7 +6,7 @@
     <Nullable>disable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Configurations>Debug;Release;Server</Configurations>
+    <Configurations>Debug;Release;Server;d server + client</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +17,10 @@
   <ItemGroup>
     <PackageReference Include="Krypton.Toolkit" Version="90.24.11.317" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,3 +1,4 @@
+using Accessibility;
 using Krypton.Toolkit;
 using Microsoft.Extensions.DependencyInjection;
 using TickTackToe.Presenter;
@@ -17,7 +18,12 @@ namespace TickTackToe
             this.PaletteMode = PaletteMode.Microsoft365Black;
             TitleStyle = KryptonFormTitleStyle.Modern;
             FormTitleAlign = PaletteRelativeAlign.Center;
+            
             _presenter = provider.GetService<MainFormPresenter>();
+            _presenter.SetLogTextBox(logRichTextBox);
+            _presenter.SetLogListBox(logListBox);
+            _presenter.SetShowStatsButton(showStatsButton);
+            _presenter.SetPlayButton(playButton);
 
             FormClosed += _presenter.OnClosed;
             Load += _presenter.OnLoaded;

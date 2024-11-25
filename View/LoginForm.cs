@@ -23,8 +23,21 @@ namespace TickTackToe.View
             InitializeComponent();
             _provider = provider;
             _presenter = _provider.GetService<LoginFormPresenter>();
+
+            _presenter.SetStatusValueLabel(statusValueLabel);
+
             Load += _presenter.OnLoaded;
             FormClosed += _presenter.OnClosed;
+        }
+
+        private async void loginButton_Click(object sender, EventArgs e)
+        {
+            await _presenter.LoginAsync(userNameTextBlock.Text, userPasswordMaskedTextBlock.Text);
+        }
+
+        private void statusValueLabel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -4,6 +4,7 @@ using Shared.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -163,17 +164,18 @@ namespace TickTackToe.Model
 
         public bool CheckForGameCompletion()
         {
-            if (CheckIfFieldIsFull())
-            {
-                FieldIsFull.Invoke();
-
-                return true;
-            }
-            else if(CheckForWinner())
+            
+            if(CheckForWinner())
             {
                 var turn = DefineWinnerTurn();
 
                 GameEnded.Invoke(turn);
+
+                return true;
+            }
+            else if (CheckIfFieldIsFull())
+            {
+                FieldIsFull.Invoke();
 
                 return true;
             }
@@ -213,5 +215,29 @@ namespace TickTackToe.Model
                 }
             }
         }
+
+        public double DefineBonus(double secondsElapsed)
+        {
+            double bonusPointsCoeff = 1d;
+
+            var timeSpan = TimeSpan.FromMinutes(secondsElapsed);
+
+            if (timeSpan <= GameSettings.MinTime)
+            {
+                bonusPointsCoeff = GameSettings.MAX_BONUS_POINTS;
+            }
+            else if (timeSpan <= GameSettings.MiddleTime)
+            {
+                bonusPointsCoeff = GameSettings.MIDDLE_BONUS_POINTS;
+            }
+            else if (timeSpan <= GameSettings.MaxTime)
+            {
+                bonusPointsCoeff = GameSettings.MIN_BONUS_POINTS;
+            }
+
+            return bonusPointsCoeff;
+        }
+
+        public double DefineRawPoints() => Random.Shared.Next(GameSettings.MIN_RAW_POINTS_BOUND, GameSettings.MAX_RAW_POINTS_BOUND);
     }
 }

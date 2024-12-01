@@ -21,6 +21,7 @@ namespace TickTackToe.Presenter
 {
     internal sealed class GameFormPresenter : PresenterBase
     {
+        private bool _isGameEndedMessageReceived;
         private bool _isExitRequestReceived;
         private bool _isExitRequestSended;
         private bool _isExitRequestApproved;
@@ -31,7 +32,6 @@ namespace TickTackToe.Presenter
         private KryptonButton[,] _buttons;
         private KryptonRichTextBox _logBox;
         private HubConnection _connection;
-        // private System.Windows.Forms.Timer _gameTimer;
         private System.Threading.Timer _gameTimer;
         private Stopwatch _stopwatch;
         private KryptonTextBox _timerTexBox;
@@ -71,12 +71,30 @@ namespace TickTackToe.Presenter
 
         private void OnGameEnded(TickTackType type)
         {
-            var isMeWinner = _game.Me.Type == type;
-            var winnerString = isMeWinner ? "win" : "loose";
+            if(!_isGameEndedMessageReceived)
+            {
+                _isGameEndedMessageReceived = true;
 
-            _logBox.Text += $"\nGame Ended! You {winnerString}.";
+                var isMeWinner = _game.Me.Type == type;
+                
+                var points = _game.DefineRawPoints();
+                var bonusPoints = _game.DefineBonus(_stopwatch.Elapsed.TotalMinutes);
+                var totalPoints = bonusPoints * points;
 
-            DisposeInternal();
+                if (isMeWinner)
+                {
+                    UserManager.Rating += totalPoints;
+                }
+                else
+                {
+                    UserManager.Rating -= totalPoints;
+                }
+
+                var winnerString = isMeWinner ? "win" : "loose";
+                _logBox.Text += $"\nGame Ended! You {winnerString}. Your rating: {UserManager.Rating}";
+
+                DisposeInternal();
+            }
         }
 
         private void DisposeInternal()
@@ -201,6 +219,7 @@ namespace TickTackToe.Presenter
 
         public override async void OnLoaded(object sender, EventArgs e)
         {
+            _isGameEndedMessageReceived = false;
             _isExitRequestApproved = false;
             _isExitRequestReceived = false;
             _isExitRequestSended = false;

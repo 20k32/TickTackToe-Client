@@ -12,6 +12,23 @@ namespace TickTackToe.Model
         public static string UserId;
         public static string UserName;
         public static bool IsAnonymous => string.IsNullOrWhiteSpace(Jwt);
-        public static int Rating;
+
+        private static double _rating;
+        public static double Rating
+        {
+            get => _rating;
+            
+            set
+            {
+                if(_rating + value <= 0d)
+                {
+                    _rating = 0d;
+                }
+                else
+                {
+                    _rating = value;
+                }
+            }
+        }
     }
 }

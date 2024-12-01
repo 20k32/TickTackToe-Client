@@ -34,9 +34,9 @@ namespace TickTackToe
             _presenter.ShowStats();
         }
 
-        private void OnLoginButtonClick(object sender, EventArgs e)
+        private async void OnLoginButtonClick(object sender, EventArgs e)
         {
-            _presenter.ShowLogin();
+           await _presenter.ShowLoginAsync();
         }
 
         private void playButton_Click(object sender, EventArgs e)

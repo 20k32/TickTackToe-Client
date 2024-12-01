@@ -1,4 +1,5 @@
-﻿using Krypton.Toolkit;
+﻿using Accessibility;
+using Krypton.Toolkit;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TickTackToe.Model;
 using TickTackToe.Presenter;
 
 namespace TickTackToe.View
@@ -33,6 +35,10 @@ namespace TickTackToe.View
                 game20Button,
                 game21Button,
                 game22Button);
+
+            _presenter.SetRichTextBoxToLog(statusTextBox);
+
+            Text = UserManager.UserName;
 
             Load += _presenter.OnLoaded;
             FormClosed += _presenter.OnClosed;

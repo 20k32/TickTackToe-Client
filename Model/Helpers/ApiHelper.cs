@@ -29,12 +29,12 @@ namespace TickTackToe.Model.Helpers
                     }
                     else
                     {
-                        result = new(null, "Server not responds at the current moment, please try later.", -1);
+                        result = new(null, null, "Server not responds at the current moment, please try later.", -1);
                     }
                 }
                 catch
                 {
-                    result = new(null, "Server not responds at the current moment, please try later.", -1);
+                    result = new(null, null, "Server not responds at the current moment, please try later.", -1);
                 }
             }
 
@@ -57,12 +57,12 @@ namespace TickTackToe.Model.Helpers
                     }
                     else
                     {
-                        result = new(null, "Server not responds at the current moment, please try later.", -1);
+                        result = new(null, null, "Server not responds at the current moment, please try later.", -1);
                     }
                 }
                 catch
                 {
-                    result = new(null, "Server not responds at the current moment, please try later.", -1);
+                    result = new(null, null, "Server not responds at the current moment, please try later.", -1);
                 }
             }
 

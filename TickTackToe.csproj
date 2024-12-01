@@ -6,7 +6,7 @@
     <Nullable>disable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Configurations>Debug;Release;Server;d server + client</Configurations>
+    <Configurations>Debug;Release;Server;d server + client;DebugBuild</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

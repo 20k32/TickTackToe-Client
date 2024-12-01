@@ -8,6 +8,7 @@ namespace TickTackToe.Model.GameLogic
 {
     internal sealed class Player
     {
+        public string Id;
         public string Name;
         public TickTackType Type;
 

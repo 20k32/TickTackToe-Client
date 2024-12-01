@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace TickTackToe.Presenter
     {
         public static void ConfigureServices(this IServiceCollection collection)
         {
+            collection.AddSingleton(collection);
+
             //dialog windows
             collection.AddSingleton<MainForm>()
                 .AddTransient<GameForm>()

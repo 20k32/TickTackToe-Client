@@ -1,6 +1,9 @@
 ﻿using Krypton.Toolkit;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Api.Messages;
 using System.ComponentModel.Design;
+using System.Data.Common;
 using TickTackToe.Model;
 using TickTackToe.View;
 
@@ -8,6 +11,7 @@ namespace TickTackToe.Presenter
 {
     internal sealed class MainFormPresenter : PresenterBase
     {
+        private readonly IServiceCollection _collection;
         private readonly IServiceProvider _provider;
         private MainForm _mainForm;
         private KryptonRichTextBox _logTextBox;
@@ -15,9 +19,10 @@ namespace TickTackToe.Presenter
         private KryptonButton _showStatsButton;
         private KryptonListBox _logListbox;
 
-        public MainFormPresenter(IServiceProvider provider) : base(provider)
+        public MainFormPresenter(IServiceProvider provider, IServiceCollection collection) : base(provider)
         {
             _provider = provider;
+            _collection = collection;
         }
 
         public void SetLogTextBox(KryptonRichTextBox textBox) => _logTextBox = textBox;
@@ -54,7 +59,7 @@ namespace TickTackToe.Presenter
             form.Load -= OnLoaded;
         }
 
-        public override void OnLoaded(object sender, EventArgs e)
+        public override async void OnLoaded(object sender, EventArgs e)
         {
             LoadSettings((KryptonForm)sender);
             LoadUIState();
@@ -66,7 +71,7 @@ namespace TickTackToe.Presenter
             statsForm.ShowDialog(_mainForm);
         }
 
-        public void ShowLogin()
+        public async Task ShowLoginAsync()
         {
             var loginForm = ServiceProvider.GetService<LoginForm>();
             var result = loginForm.ShowDialog(_mainForm);
@@ -74,6 +79,20 @@ namespace TickTackToe.Presenter
             if(!string.IsNullOrEmpty(UserManager.Jwt))
             {
                 LoadUIState();
+            }
+
+            try
+            {
+                var connection = new HubConnectionBuilder().WithUrl($"http://localhost:5283/users?access_token={UserManager.Jwt}").Build();
+                await connection.StartAsync();
+
+                _collection.AddSingleton(connection);
+
+                _logTextBox.Text += "\nConnected.";
+            }
+            catch
+            {
+                _logTextBox.Text += "\nFailed to connect.";
             }
         }
 

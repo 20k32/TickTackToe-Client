@@ -1,9 +1,11 @@
 ﻿using Krypton.Toolkit;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Api.Messages;
 using Shared.DTOs;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -16,16 +18,20 @@ namespace TickTackToe.Presenter
 {
     internal sealed class GameFormPresenter : PresenterBase
     {
-        private UserDto _me;
+        private GameChangedParameter _gameState;
+        private string _senderId;
         private GameCore _game;
         private KryptonButton[,] _buttons;
+        private KryptonRichTextBox _logBox;
+        private HubConnection _connection;
 
-
-        public GameFormPresenter(IServiceProvider provider) : base(provider)
+        public GameFormPresenter(IServiceCollection collection) : base(collection.BuildServiceProvider())
         {
-            _me = new(UserManager.UserName, string.Empty, string.Empty, UserManager.Rating);
-            _game = provider.GetService<GameCore>();
+            _game = ServiceProvider.GetService<GameCore>();
             _game.FieldChangedByMe += OnFieldChangedByMe;
+            _connection = ServiceProvider.GetService<HubConnection>();
+            _connection.On<GameStartParameters>("OnStartMessage", OnGameStart);
+            _connection.On<GameChangedParameter>("OnGameHappening", LoadGameState);
         }
 
         public void LoadButtons(params KryptonButton[] buttons)
@@ -47,64 +53,72 @@ namespace TickTackToe.Presenter
             }
         }
 
-        private void OnFieldChangedByMe((int, int) tuple)
+        private void OnFieldChangedByMe(bool isCross, int posX, int posY)
         {
-            var player = _game.DefinePlayerForUser(_me);
-
-            var iconPath = player.Type == Model.GameLogic.TickTackType.Cross 
-                ? ResourcesFolder.PathToCrossIcon 
-                : ResourcesFolder.PathToZeroIcon;
-
+            var iconPath = isCross
+               ? ResourcesFolder.PathToCrossIcon
+               : ResourcesFolder.PathToZeroIcon;
 
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconPath);
-            /*using (var image = Image.FromFile(iconPath))
-            {
-                _buttons[tuple.Item1, tuple.Item2].BackgroundImage = image;
-            }*/
-
             var image = Image.FromFile(path);
-            _buttons[tuple.Item1, tuple.Item2].Values.Image = image;
+
+            _buttons[posY, posX].Values.Image = image;
+
+            var parameter = _game.SaveState();
+            parameter.ToUserId = _senderId;
+
+            _connection.SendAsync("GameHappening", parameter);
+            //todo: check for completion!!!
+        }
+
+        private void LoadGameState(GameChangedParameter parameter)
+        {
+            _game.LoadState(parameter);
+
+            OnFieldChangedByMe(parameter.IsCross, parameter.PosX, parameter.PosY);
         }
 
         public override void OnClosed(object sender, FormClosedEventArgs e)
         {
             var form = (KryptonForm)sender;
             form.Load -= OnLoaded;
+
+            _logBox.Text = string.Empty;
         }
 
-        public override void OnLoaded(object sender, EventArgs e)
+        public override async void OnLoaded(object sender, EventArgs e)
         {
             LoadSettings((KryptonForm)sender);
 
-            _game.InitPlayersRandomly();
-            _game.AssignFirstPlayer(_me);
-
             var opponent = new UserDto("opponent", "", "", 12);
-            _game.AssingSecondPlayer(opponent);
+
+            await _connection.SendAsync("AddToPoolAsync", UserManager.UserName, UserManager.UserId);
         }
 
-        public async void TryMakeTurn(int posX, int posY)
+        public void OnGameStart(GameStartParameters parameters)
         {
-            var player = _game.DefinePlayerForUser(_me);
-            player.Type = Model.GameLogic.TickTackType.Cross;
-            var turn = _game.DefineTurn();
-            
-            var result = _game.MakeTurn(_me, posX, posY);
-
-
-            //Set connection
-
-            var connection = new HubConnectionBuilder().WithUrl("http://localhost:5283/users").Build();
-            connection.On<string>("Receive", (message) =>
+            _logBox.Invoke(() =>
             {
-                Debug.WriteLine("Received");
+                _senderId = parameters.SenderId;
+
+                _logBox.Text += $"{parameters.SenderUserName}: {parameters.Message}";
+
+                _game.AssignFirstPlayer(parameters.FirstPlayerUserName, parameters.FirstPlayerId);
+                _game.AssingSecondPlayer(parameters.SecondPlayerUserName, parameters.SecondPlayerId);
+                _game.DefinePlayerForMe(UserManager.UserId);
+
+                if (_game.Me.Type == Model.GameLogic.TickTackType.Cross)
+                {
+                    _logBox.Text += $"\nsystem: your turn";
+                }
             });
+        }
 
-            await connection.StartAsync();
+        public void SetRichTextBoxToLog(KryptonRichTextBox textBox) => _logBox = textBox;
 
-            await connection.InvokeAsync("foo", "sdfasdf");
-
-        
+        public void TryMakeTurn(int posX, int posY)
+        {
+            var result = _game.MakeTurn(posX, posY, _senderId);
         }
     }
 }

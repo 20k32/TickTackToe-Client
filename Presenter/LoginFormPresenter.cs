@@ -60,6 +60,7 @@ namespace TickTackToe.Presenter
                     {
                         UserManager.Jwt = responce.Token;
                         UserManager.UserName = userName;
+                        UserManager.UserId = responce.UserId;
                     }
 
                     statusValueLabel.Text = responce.Message;
@@ -89,6 +90,7 @@ namespace TickTackToe.Presenter
                     {
                         UserManager.Jwt = responce.Token;
                         UserManager.UserName = userName;
+                        UserManager.UserId = responce.UserId;
                     }
 
                     statusValueLabel.Text = responce.Message;

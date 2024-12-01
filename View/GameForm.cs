@@ -22,9 +22,9 @@ namespace TickTackToe.View
         public GameForm(IServiceProvider provider)
         {
             InitializeComponent();
-            
+
             _presenter = provider.GetService<GameFormPresenter>();
-            
+
             _presenter.LoadButtons(
                 game00button,
                 game01Button,
@@ -37,11 +37,12 @@ namespace TickTackToe.View
                 game22Button);
 
             _presenter.SetRichTextBoxToLog(statusTextBox);
+            _presenter.SetGameTimerTextBox(timerTextBox);
 
             Text = UserManager.UserName;
 
             Load += _presenter.OnLoaded;
-            FormClosed += _presenter.OnClosed;
+            FormClosing += _presenter.OnClosing;
         }
 
         private void game00button_Click(object sender, EventArgs e)

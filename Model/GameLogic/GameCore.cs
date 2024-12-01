@@ -17,7 +17,6 @@ namespace TickTackToe.Model
         public const int FiedlWidth = 3;
 
         private int _turnCount;
-        private TickTackType turnType;
 
         public Player Me { get; private set; }
 
@@ -66,6 +65,7 @@ namespace TickTackToe.Model
         public bool IsTurnFirst(string id) => Me.Type == TickTackType.Cross;
 
         public TickTackType DefineTurn() => _turnCount % 2 == 0 ? TickTackType.Cross : TickTackType.Zero;
+        private TickTackType DefineWinnerTurn() => (_turnCount - 1) % 2 == 0 ? TickTackType.Cross : TickTackType.Zero;
 
         public bool MakeTurn(int posX, int posY, string toUserId)
         {
@@ -80,19 +80,17 @@ namespace TickTackToe.Model
 
             if(turn == Me.Type)
             {
-                if (_field[posX, posY] == null)
+                if (_field[posY, posX] == null)
                 {
-                    _field[posX, posY] = Me.Type;
+                    _field[posY, posX] = Me.Type;
                     _turnCount++;
                     result = true;
 
                     var isCorss = Me.Type == TickTackType.Cross;
-                    FieldChangedByMe(isCorss, posX, posY);
-
                     _gameState = new GameChangedParameter(_turnCount, posX, posY, isCorss, toUserId);
+                    FieldChangedByMe(isCorss, posX, posY);
                 }
             }
-           
 
             return result;
         }
@@ -115,10 +113,11 @@ namespace TickTackToe.Model
             return counter == _field.Length;
         }
 
-        private bool CheckForAWinner()
+        private bool CheckForWinner()
         {
             bool thereIsAWinner = false;
 
+            // y
             if ((_field[0, 0] == _field[0, 1]) && (_field[0, 1] == _field[0, 2]) && _field[0, 0] is not null)
             {
                 thereIsAWinner = true;
@@ -131,18 +130,20 @@ namespace TickTackToe.Model
             {
                 thereIsAWinner = true;
             }
+            // x
             else if ((_field[0, 0] == _field[1, 0]) && (_field[1, 0] == _field[2, 0]) && _field[0, 0] is not null)
             {
                 thereIsAWinner = true;
             }
-            else if ((_field[1, 0] == _field[1, 1]) && (_field[1, 1] == _field[1, 2]) && _field[1, 0] is not null)
+            else if ((_field[0, 1] == _field[1, 1]) && (_field[1, 1] == _field[2, 1]) && _field[0, 1] is not null)
             {
                 thereIsAWinner = true;
             }
-            else if ((_field[2, 0] == _field[2, 1]) && (_field[2, 1] == _field[2, 2]) && _field[2, 0] is not null)
+            else if ((_field[0, 2] == _field[1, 2]) && (_field[1, 2] == _field[2, 2]) && _field[0, 2] is not null)
             {
                 thereIsAWinner = true;
             }
+            // x + y
             else if ((_field[0, 0] == _field[1, 1]) && (_field[1, 1] == _field[2, 2]) && _field[0, 0] is not null)
             {
                 thereIsAWinner = true;
@@ -168,9 +169,11 @@ namespace TickTackToe.Model
 
                 return true;
             }
-            else if(CheckForAWinner())
+            else if(CheckForWinner())
             {
-                GameEnded.Invoke(turnType);
+                var turn = DefineWinnerTurn();
+
+                GameEnded.Invoke(turn);
 
                 return true;
             }
@@ -180,6 +183,7 @@ namespace TickTackToe.Model
             }
 
             return false;
+
         }
 
         internal bool LoadState(GameChangedParameter parameter)
@@ -196,5 +200,18 @@ namespace TickTackToe.Model
         }
 
         public GameChangedParameter SaveState() => _gameState;
+
+        internal void ResetState()
+        {
+            _turnCount = 0;
+
+            for(int i = 0; i < _field.GetLength(0); i++)
+            {
+                for (int j = 0; j < _field.GetLength(1); j++)
+                {
+                    _field[i, j] = null;
+                }
+            }
+        }
     }
 }

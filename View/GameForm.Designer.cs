@@ -29,10 +29,10 @@ namespace TickTackToe.View
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             kryptonTableLayoutPanel1 = new Krypton.Toolkit.KryptonTableLayoutPanel();
             statusLabel = new Krypton.Toolkit.KryptonLabel();
-            timerLabel = new Krypton.Toolkit.KryptonLabel();
             kryptonTableLayoutPanel2 = new Krypton.Toolkit.KryptonTableLayoutPanel();
             game22Button = new Krypton.Toolkit.KryptonButton();
             game21Button = new Krypton.Toolkit.KryptonButton();
@@ -44,6 +44,8 @@ namespace TickTackToe.View
             game02Button = new Krypton.Toolkit.KryptonButton();
             game01Button = new Krypton.Toolkit.KryptonButton();
             statusTextBox = new Krypton.Toolkit.KryptonRichTextBox();
+            gameTimer = new System.Windows.Forms.Timer(components);
+            timerTextBox = new Krypton.Toolkit.KryptonTextBox();
             kryptonTableLayoutPanel1.SuspendLayout();
             kryptonTableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -57,9 +59,9 @@ namespace TickTackToe.View
             kryptonTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
             kryptonTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             kryptonTableLayoutPanel1.Controls.Add(statusLabel, 0, 0);
-            kryptonTableLayoutPanel1.Controls.Add(timerLabel, 1, 0);
             kryptonTableLayoutPanel1.Controls.Add(kryptonTableLayoutPanel2, 1, 1);
             kryptonTableLayoutPanel1.Controls.Add(statusTextBox, 0, 1);
+            kryptonTableLayoutPanel1.Controls.Add(timerTextBox, 1, 0);
             kryptonTableLayoutPanel1.Dock = DockStyle.Fill;
             kryptonTableLayoutPanel1.Location = new Point(0, 0);
             kryptonTableLayoutPanel1.Name = "kryptonTableLayoutPanel1";
@@ -78,20 +80,6 @@ namespace TickTackToe.View
             statusLabel.Size = new Size(114, 61);
             statusLabel.TabIndex = 3;
             statusLabel.Values.Text = "_";
-            // 
-            // timerLabel
-            // 
-            timerLabel.Dock = DockStyle.Fill;
-            timerLabel.LabelStyle = Krypton.Toolkit.LabelStyle.TitleControl;
-            timerLabel.Location = new Point(123, 3);
-            timerLabel.Name = "timerLabel";
-            timerLabel.Size = new Size(554, 61);
-            timerLabel.StateCommon.LongText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            timerLabel.StateCommon.LongText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            timerLabel.StateCommon.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            timerLabel.StateCommon.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            timerLabel.TabIndex = 0;
-            timerLabel.Values.Text = "00:00";
             // 
             // kryptonTableLayoutPanel2
             // 
@@ -228,12 +216,30 @@ namespace TickTackToe.View
             statusTextBox.TabIndex = 4;
             statusTextBox.Text = "";
             // 
+            // timerTextBox
+            // 
+            timerTextBox.Anchor = AnchorStyles.None;
+            timerTextBox.Location = new Point(250, 16);
+            timerTextBox.MaximumSize = new Size(300, 0);
+            timerTextBox.MaxLength = 300;
+            timerTextBox.MinimumSize = new Size(300, 0);
+            timerTextBox.Name = "timerTextBox";
+            timerTextBox.ReadOnly = true;
+            timerTextBox.Size = new Size(300, 34);
+            timerTextBox.StateActive.Border.Color1 = Color.Transparent;
+            timerTextBox.StateActive.Border.Color2 = Color.Transparent;
+            timerTextBox.StateActive.Content.Color1 = Color.Black;
+            timerTextBox.StateActive.Content.Font = new Font("Microsoft YaHei UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            timerTextBox.TabIndex = 5;
+            timerTextBox.TextAlign = HorizontalAlignment.Center;
+            // 
             // GameForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(kryptonTableLayoutPanel1);
+            DoubleBuffered = false;
             Name = "GameForm";
             Text = "GameForm";
             kryptonTableLayoutPanel1.ResumeLayout(false);
@@ -258,5 +264,7 @@ namespace TickTackToe.View
         private Krypton.Toolkit.KryptonButton game01Button;
         private Krypton.Toolkit.KryptonLabel statusLabel;
         private Krypton.Toolkit.KryptonRichTextBox statusTextBox;
+        private System.Windows.Forms.Timer gameTimer;
+        private Krypton.Toolkit.KryptonTextBox timerTextBox;
     }
 }

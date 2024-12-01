@@ -23,7 +23,7 @@ namespace TickTackToe.View
 
             _presenter = provider.GetService<StatsFormPresenter>();
             Load += _presenter.OnLoaded;
-            FormClosed += _presenter.OnClosed;
+            FormClosing += _presenter.OnClosing;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

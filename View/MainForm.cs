@@ -25,7 +25,7 @@ namespace TickTackToe
             _presenter.SetShowStatsButton(showStatsButton);
             _presenter.SetPlayButton(playButton);
 
-            FormClosed += _presenter.OnClosed;
+            FormClosing += _presenter.OnClosing;
             Load += _presenter.OnLoaded;
         }
 

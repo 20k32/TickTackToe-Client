@@ -27,6 +27,6 @@ namespace TickTackToe.Presenter
         }
 
         public abstract void OnLoaded(object sender, EventArgs e);
-        public abstract void OnClosed(object sender, FormClosedEventArgs e);
+        public abstract void OnClosing(object sender, FormClosingEventArgs e);
     }
 }

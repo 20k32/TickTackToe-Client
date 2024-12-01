@@ -121,7 +121,7 @@
   <data name="kryptonTableLayoutPanel1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAyAAAAHCCAYAAAAXY63IAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vwAADr8BOAVTJAAACSFJREFUeF7t1zEBACAMwDD8W8IDMmZjuOiVIyJy7psFAAAoCAgAAJAREAAAICMg
+        vAAADrwBlbxySQAACSFJREFUeF7t1zEBACAMwDD8W8IDMmZjuOiVIyJy7psFAAAoCAgAAJAREAAAICMg
         AABARkAAAICMgAAAABkBAQAAMgICAABkBAQAAMgICAAAkBEQAAAgIyAAAEBGQAAAgIyAAAAAGQEBAAAy
         AgIAAGQEBAAAyAgIAACQERAAACAjIAAAQEZAAACAjIAAAAAZAQEAADICAgAAZAQEAADICAgAAJAREAAA
         ICMgAABARkAAAICMgAAAABkBAQAAMgICAABkBAQAAMgICAAAkBEQAAAgIyAAAEBGQAAAgIyAAAAAGQEB
@@ -166,7 +166,7 @@
   <data name="kryptonTableLayoutPanel2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAioAAAE1CAYAAADJWMtgAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAB9RJREFUeF7t2sFNQ1EQBEGSd1TkQBhOw8iWuBHA9qgOJfR9nUtreV+Px+P19v3z
+        vAAADrwBlbxySQAAB9RJREFUeF7t2sFNQ1EQBEGSd1TkQBhOw8iWuBHA9qgOJfR9nUtreV+Px+P19v3z
         /Pz17du3b9++ffu+8v0JlfePbLIvAGVf//3IDqECQJmLCgBwllAZZ18AyoTKOPsCUOaNyjihAkCZiwoA
         cJZQGWdfAMqEyjj7AlDmjco4oQJAmYsKAHCWUBlnXwDKhMo4+wJQ5o3KOKECQJmLCgBwllAZZ18AyoTK
         OPsCUOaNyjihAkCZiwoAcJZQGWdfAMqEyjj7AlDmjco4oQJAmYsKAHCWUBlnXwDKhMo4+wJQ5o3KOKEC
@@ -202,4 +202,7 @@
         iwoAcJZQGWdfAMqEyjj7AlAmVMbZF4AyoQIAnCVUxtkXgK7n6xcmi4RctAGSAwAAAABJRU5ErkJggg==
 </value>
   </data>
+  <metadata name="gameTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

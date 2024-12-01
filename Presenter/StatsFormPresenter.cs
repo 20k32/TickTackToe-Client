@@ -19,7 +19,7 @@ namespace TickTackToe.Presenter
             _provider = provider;
         }
 
-        public override void OnClosed(object sender, FormClosedEventArgs e)
+        public override void OnClosing(object sender, FormClosingEventArgs e)
         {
             var form = (KryptonForm)sender;
             form.Load -= OnLoaded;

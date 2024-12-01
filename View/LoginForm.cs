@@ -27,7 +27,7 @@ namespace TickTackToe.View
             _presenter.SetStatusValueLabel(statusValueLabel);
 
             Load += _presenter.OnLoaded;
-            FormClosed += _presenter.OnClosed;
+            FormClosing += _presenter.OnClosing;
         }
 
         private async void loginButton_Click(object sender, EventArgs e)

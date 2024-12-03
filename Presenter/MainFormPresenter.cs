@@ -5,6 +5,7 @@ using Shared.Api.Messages;
 using System.ComponentModel.Design;
 using System.Data.Common;
 using TickTackToe.Model;
+using TickTackToe.Model.Helpers;
 using TickTackToe.View;
 
 namespace TickTackToe.Presenter
@@ -18,11 +19,17 @@ namespace TickTackToe.Presenter
         private KryptonButton _playButton;
         private KryptonButton _showStatsButton;
         private KryptonListBox _logListbox;
+        private CancellationTokenSource _cts;
+        private System.Threading.Timer _timer;
 
         public MainFormPresenter(IServiceProvider provider, IServiceCollection collection) : base(provider)
         {
             _provider = provider;
             _collection = collection;
+            _cts = new();
+
+            _timer = new((_) => _ = UpdatePoolLog());
+            _timer.Change(0, 5000);
         }
 
         public void SetLogTextBox(KryptonRichTextBox textBox) => _logTextBox = textBox;
@@ -39,9 +46,9 @@ namespace TickTackToe.Presenter
             {
                 _logTextBox.Text += "Anonymous, please, register or log in to play.";
                 
-                //_logListbox.Enabled = false;
-                //_playButton.Enabled = false;
-                //_showStatsButton.Enabled = false;
+                _logListbox.Enabled = false;
+                _playButton.Enabled = false;
+                _showStatsButton.Enabled = false;
             }
             else
             {
@@ -59,7 +66,7 @@ namespace TickTackToe.Presenter
             form.Load -= OnLoaded;
         }
 
-        public override async void OnLoaded(object sender, EventArgs e)
+        public override void OnLoaded(object sender, EventArgs e)
         {
             LoadSettings((KryptonForm)sender);
             LoadUIState();
@@ -79,20 +86,20 @@ namespace TickTackToe.Presenter
             if(!string.IsNullOrEmpty(UserManager.Jwt))
             {
                 LoadUIState();
-            }
 
-            try
-            {
-                var connection = new HubConnectionBuilder().WithUrl($"http://localhost:5283/users?access_token={UserManager.Jwt}").Build();
-                await connection.StartAsync();
+                try
+                {
+                    var connection = new HubConnectionBuilder().WithUrl($"http://localhost:5283/users?access_token={UserManager.Jwt}").Build();
+                    await connection.StartAsync();
 
-                _collection.AddSingleton(connection);
+                    _collection.AddSingleton(connection);
 
-                _logTextBox.Text += "\nConnected.";
-            }
-            catch
-            {
-                _logTextBox.Text += "\nFailed to connect.";
+                    _logTextBox.Text += "\nConnected.";
+                }
+                catch
+                {
+                    _logTextBox.Text += "\nFailed to connect.";
+                }
             }
         }
 
@@ -100,6 +107,23 @@ namespace TickTackToe.Presenter
         {
             var gameForm = ServiceProvider.GetService<GameForm>();
             gameForm.ShowDialog(_mainForm);
+        }
+
+        private async Task UpdatePoolLog()
+        {
+            _logListbox.Invoke(() =>
+            {
+                _logListbox.Items.Clear();
+            });
+
+
+            await foreach(var item in ApiHelper.GetPoolSnapshotAsync(_cts))
+            {
+                _logListbox.Invoke(() =>
+                {
+                    _logListbox.Items.Add(item);
+                });
+            }
         }
     }
 }

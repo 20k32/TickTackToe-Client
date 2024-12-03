@@ -58,9 +58,9 @@ namespace TickTackToe.Presenter
                 {
                     if (responce.StatusCode == 200)
                     {
-                        UserManager.Jwt = responce.Token;
+                        UserManager.Jwt = responce.Value.Token;
                         UserManager.UserName = userName;
-                        UserManager.UserId = responce.UserId;
+                        UserManager.UserId = responce.Value.UserId;
                     }
 
                     statusValueLabel.Text = responce.Message;
@@ -88,9 +88,9 @@ namespace TickTackToe.Presenter
                 {
                     if (responce.StatusCode == 200)
                     {
-                        UserManager.Jwt = responce.Token;
+                        UserManager.Jwt = responce.Value.Token;
                         UserManager.UserName = userName;
-                        UserManager.UserId = responce.UserId;
+                        UserManager.UserId = responce.Value.UserId;
                     }
 
                     statusValueLabel.Text = responce.Message;

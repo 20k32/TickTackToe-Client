@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Formats.Asn1;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TickTackToe.Model;
@@ -21,11 +22,14 @@ namespace TickTackToe.Presenter
 {
     internal sealed class GameFormPresenter : PresenterBase
     {
+        private static bool _isFirstInit = true;
+
         private bool _isGameEndedMessageReceived;
         private bool _isExitRequestReceived;
         private bool _isExitRequestSended;
         private bool _isExitRequestApproved;
         private bool _isGameStarted;
+
         private GameChangedParameter _gameState;
         private string _senderId;
         private GameCore _game;
@@ -35,6 +39,7 @@ namespace TickTackToe.Presenter
         private System.Threading.Timer _gameTimer;
         private Stopwatch _stopwatch;
         private KryptonTextBox _timerTexBox;
+        private CancellationTokenSource _cancellationSource;
         
 
         public GameFormPresenter(IServiceCollection collection) : base(collection.BuildServiceProvider())
@@ -42,11 +47,10 @@ namespace TickTackToe.Presenter
             _game = ServiceProvider.GetService<GameCore>();
             _game.FieldChangedByMe += OnFieldChangedByMe;
             _game.GameEnded += OnGameEnded;
+
             _connection = ServiceProvider.GetService<HubConnection>();
-            _connection.On<GameStartParameters>("OnStartMessage", GameStart);
-            _connection.On<GameChangedParameter>("OnGameHappening", LoadGameState);
-            _connection.On<bool>("OnExitRequested", ExitRequested);
-            _connection.On<bool>("OnExitApproved", ExitApproved);
+
+            _cancellationSource = new();
             _stopwatch = new();
         }
 
@@ -164,7 +168,7 @@ namespace TickTackToe.Presenter
             });
         }
 
-        public override void OnClosing(object sender, FormClosingEventArgs e)
+        public override async void OnClosing(object sender, FormClosingEventArgs e)
         {
             if (_isGameStarted)
             {
@@ -195,7 +199,17 @@ namespace TickTackToe.Presenter
             }
             else
             {
-                ExitCore((KryptonForm)sender);
+                var removeResult = await ApiHelper.SendRemoveFromPoolRequestAsync(_cancellationSource);
+                
+                if (removeResult.IsSuccessStatusCode)
+                {
+                    ExitCore((KryptonForm)sender);
+                }
+                else
+                {
+                    MessageBox.Show(removeResult.Message, "Failed to remove you from pool");
+                    e.Cancel = true;
+                }
             }
         }
 
@@ -219,13 +233,39 @@ namespace TickTackToe.Presenter
 
         public override async void OnLoaded(object sender, EventArgs e)
         {
-            _isGameEndedMessageReceived = false;
-            _isExitRequestApproved = false;
-            _isExitRequestReceived = false;
-            _isExitRequestSended = false;
-            _isGameStarted = false;
-            LoadSettings((KryptonForm)sender);
-            await _connection.SendAsync("AddToPoolAsync", UserManager.UserName, UserManager.UserId);
+            if(_connection is null)
+            {
+                MessageBox.Show("Connection is not initialized yet, re-enter game window.", "Failed to connect");
+                var form = (KryptonForm)sender;
+                form.Close();
+            }
+            else
+            {
+                if (_isFirstInit)
+                {
+                    _isFirstInit = false;
+
+                    _connection.On<GameStartParameters>("OnStartMessage", GameStart);
+                    _connection.On<GameChangedParameter>("OnGameHappening", LoadGameState);
+                    _connection.On<bool>("OnExitRequested", ExitRequested);
+                    _connection.On<bool>("OnExitApproved", ExitApproved);
+                }
+                
+
+                _isGameEndedMessageReceived = false;
+                _isExitRequestApproved = false;
+                _isExitRequestReceived = false;
+                _isExitRequestSended = false;
+                _isGameStarted = false;
+                LoadSettings((KryptonForm)sender);
+
+                var result = await ApiHelper.SendAddToPoolRequestAsync(_cancellationSource);
+
+                if (!result.IsSuccessStatusCode)
+                {
+                    MessageBox.Show(result.Message, "Failed to connect");
+                }
+            }
         }
 
         private void OnGameTimerTick(object sender, EventArgs e)
@@ -270,7 +310,11 @@ namespace TickTackToe.Presenter
 
         public void TryMakeTurn(int posX, int posY)
         {
-            if (_isGameStarted)
+            if (_isExitRequestApproved)
+            {
+                _logBox.Text = "You can't make turn because opponent exited!";
+            }
+            else if (_isGameStarted)
             {
                 var result = _game.MakeTurn(posX, posY, _senderId);
             }
@@ -282,7 +326,6 @@ namespace TickTackToe.Presenter
 
         internal void SetGameTimerTextBox(KryptonTextBox textBox)
         {
-            //_gameTimer = gameTimer;
             _timerTexBox = textBox;
         }
     }

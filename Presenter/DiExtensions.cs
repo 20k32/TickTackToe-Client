@@ -14,6 +14,9 @@ namespace TickTackToe.Presenter
     {
         public static void ConfigureServices(this IServiceCollection collection)
         {
+            var hubConnectionWrapper = new HubConnectionWrapper();
+
+            collection.AddSingleton(hubConnectionWrapper);
             collection.AddSingleton(collection);
 
             //dialog windows

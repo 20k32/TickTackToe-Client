@@ -24,11 +24,10 @@ namespace TickTackToe.View
             _presenter = provider.GetService<StatsFormPresenter>();
             Load += _presenter.OnLoaded;
             FormClosing += _presenter.OnClosing;
-        }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
+            _presenter.SetStatsDataGrid(statsGrid);
+            _presenter.SetUserNameLabel(userNameLabel);
+            _presenter.SetUserRatingLabel(userRatingLabel);
         }
     }
 }

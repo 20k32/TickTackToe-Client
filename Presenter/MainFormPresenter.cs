@@ -12,6 +12,9 @@ namespace TickTackToe.Presenter
 {
     internal sealed class MainFormPresenter : PresenterBase
     {
+        private static bool _isNewUserEntry = false;
+
+
         private readonly IServiceCollection _collection;
         private readonly IServiceProvider _provider;
         private MainForm _mainForm;
@@ -24,12 +27,19 @@ namespace TickTackToe.Presenter
 
         public MainFormPresenter(IServiceProvider provider, IServiceCollection collection) : base(provider)
         {
+            UserManager.NewUserEntryCreated += OnNewUserCreated;
+
             _provider = provider;
             _collection = collection;
             _cts = new();
 
             _timer = new((_) => _ = UpdatePoolLog());
             _timer.Change(0, 5000);
+        }
+
+        private void OnNewUserCreated()
+        {
+            _isNewUserEntry = true;
         }
 
         public void SetLogTextBox(KryptonRichTextBox textBox) => _logTextBox = textBox;
@@ -83,16 +93,18 @@ namespace TickTackToe.Presenter
             var loginForm = ServiceProvider.GetService<LoginForm>();
             var result = loginForm.ShowDialog(_mainForm);
 
-            if(!string.IsNullOrEmpty(UserManager.Jwt))
+            if(!string.IsNullOrEmpty(UserManager.Jwt) && _isNewUserEntry)
             {
+                _isNewUserEntry = false;
+
                 LoadUIState();
 
                 try
                 {
-                    var connection = new HubConnectionBuilder().WithUrl($"http://localhost:5283/users?access_token={UserManager.Jwt}").Build();
-                    await connection.StartAsync();
+                    var connectionWrapper = _provider.GetService<HubConnectionWrapper>();
 
-                    _collection.AddSingleton(connection);
+                    connectionWrapper.Connection = new HubConnectionBuilder().WithUrl($"http://localhost:5283/users?access_token={UserManager.Jwt}").Build();
+                    await connectionWrapper.Connection.StartAsync();
 
                     _logTextBox.Text += "\nConnected.";
                 }

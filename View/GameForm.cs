@@ -89,5 +89,6 @@ namespace TickTackToe.View
         {
             _presenter.TryMakeTurn(2, 2);
         }
+
     }
 }

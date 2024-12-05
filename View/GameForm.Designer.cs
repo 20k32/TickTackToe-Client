@@ -32,7 +32,6 @@ namespace TickTackToe.View
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             kryptonTableLayoutPanel1 = new Krypton.Toolkit.KryptonTableLayoutPanel();
-            statusLabel = new Krypton.Toolkit.KryptonLabel();
             kryptonTableLayoutPanel2 = new Krypton.Toolkit.KryptonTableLayoutPanel();
             game22Button = new Krypton.Toolkit.KryptonButton();
             game21Button = new Krypton.Toolkit.KryptonButton();
@@ -44,8 +43,8 @@ namespace TickTackToe.View
             game02Button = new Krypton.Toolkit.KryptonButton();
             game01Button = new Krypton.Toolkit.KryptonButton();
             statusTextBox = new Krypton.Toolkit.KryptonRichTextBox();
-            gameTimer = new System.Windows.Forms.Timer(components);
             timerTextBox = new Krypton.Toolkit.KryptonTextBox();
+            gameTimer = new System.Windows.Forms.Timer(components);
             kryptonTableLayoutPanel1.SuspendLayout();
             kryptonTableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -55,13 +54,12 @@ namespace TickTackToe.View
             kryptonTableLayoutPanel1.BackgroundImage = (Image)resources.GetObject("kryptonTableLayoutPanel1.BackgroundImage");
             kryptonTableLayoutPanel1.BackgroundImageLayout = ImageLayout.None;
             kryptonTableLayoutPanel1.ColumnCount = 3;
-            kryptonTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            kryptonTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
-            kryptonTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            kryptonTableLayoutPanel1.Controls.Add(statusLabel, 0, 0);
+            kryptonTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.875F));
+            kryptonTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 64.75F));
+            kryptonTableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1.375F));
             kryptonTableLayoutPanel1.Controls.Add(kryptonTableLayoutPanel2, 1, 1);
             kryptonTableLayoutPanel1.Controls.Add(statusTextBox, 0, 1);
-            kryptonTableLayoutPanel1.Controls.Add(timerTextBox, 1, 0);
+            kryptonTableLayoutPanel1.Controls.Add(timerTextBox, 0, 0);
             kryptonTableLayoutPanel1.Dock = DockStyle.Fill;
             kryptonTableLayoutPanel1.Location = new Point(0, 0);
             kryptonTableLayoutPanel1.Name = "kryptonTableLayoutPanel1";
@@ -71,15 +69,6 @@ namespace TickTackToe.View
             kryptonTableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             kryptonTableLayoutPanel1.Size = new Size(800, 450);
             kryptonTableLayoutPanel1.TabIndex = 0;
-            // 
-            // statusLabel
-            // 
-            statusLabel.Dock = DockStyle.Fill;
-            statusLabel.Location = new Point(3, 3);
-            statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(114, 61);
-            statusLabel.TabIndex = 3;
-            statusLabel.Values.Text = "_";
             // 
             // kryptonTableLayoutPanel2
             // 
@@ -99,21 +88,21 @@ namespace TickTackToe.View
             kryptonTableLayoutPanel2.Controls.Add(game02Button, 2, 0);
             kryptonTableLayoutPanel2.Controls.Add(game01Button, 1, 0);
             kryptonTableLayoutPanel2.Dock = DockStyle.Fill;
-            kryptonTableLayoutPanel2.Location = new Point(123, 70);
+            kryptonTableLayoutPanel2.Location = new Point(274, 70);
             kryptonTableLayoutPanel2.Name = "kryptonTableLayoutPanel2";
             kryptonTableLayoutPanel2.RowCount = 3;
             kryptonTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             kryptonTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             kryptonTableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            kryptonTableLayoutPanel2.Size = new Size(554, 309);
+            kryptonTableLayoutPanel2.Size = new Size(512, 309);
             kryptonTableLayoutPanel2.TabIndex = 1;
             // 
             // game22Button
             // 
             game22Button.Dock = DockStyle.Fill;
-            game22Button.Location = new Point(371, 209);
+            game22Button.Location = new Point(343, 209);
             game22Button.Name = "game22Button";
-            game22Button.Size = new Size(180, 97);
+            game22Button.Size = new Size(166, 97);
             game22Button.TabIndex = 8;
             game22Button.Values.DropDownArrowColor = Color.Empty;
             game22Button.Values.Text = "";
@@ -122,9 +111,9 @@ namespace TickTackToe.View
             // game21Button
             // 
             game21Button.Dock = DockStyle.Fill;
-            game21Button.Location = new Point(187, 209);
+            game21Button.Location = new Point(173, 209);
             game21Button.Name = "game21Button";
-            game21Button.Size = new Size(178, 97);
+            game21Button.Size = new Size(164, 97);
             game21Button.TabIndex = 7;
             game21Button.Values.DropDownArrowColor = Color.Empty;
             game21Button.Values.Text = "";
@@ -135,7 +124,7 @@ namespace TickTackToe.View
             game20Button.Dock = DockStyle.Fill;
             game20Button.Location = new Point(3, 209);
             game20Button.Name = "game20Button";
-            game20Button.Size = new Size(178, 97);
+            game20Button.Size = new Size(164, 97);
             game20Button.TabIndex = 6;
             game20Button.Values.DropDownArrowColor = Color.Empty;
             game20Button.Values.Text = "";
@@ -144,9 +133,9 @@ namespace TickTackToe.View
             // game12Button
             // 
             game12Button.Dock = DockStyle.Fill;
-            game12Button.Location = new Point(371, 106);
+            game12Button.Location = new Point(343, 106);
             game12Button.Name = "game12Button";
-            game12Button.Size = new Size(180, 97);
+            game12Button.Size = new Size(166, 97);
             game12Button.TabIndex = 5;
             game12Button.Values.DropDownArrowColor = Color.Empty;
             game12Button.Values.Text = "";
@@ -155,9 +144,9 @@ namespace TickTackToe.View
             // game11Button
             // 
             game11Button.Dock = DockStyle.Fill;
-            game11Button.Location = new Point(187, 106);
+            game11Button.Location = new Point(173, 106);
             game11Button.Name = "game11Button";
-            game11Button.Size = new Size(178, 97);
+            game11Button.Size = new Size(164, 97);
             game11Button.TabIndex = 4;
             game11Button.Values.DropDownArrowColor = Color.Empty;
             game11Button.Values.Text = "";
@@ -168,7 +157,7 @@ namespace TickTackToe.View
             game10Button.Dock = DockStyle.Fill;
             game10Button.Location = new Point(3, 106);
             game10Button.Name = "game10Button";
-            game10Button.Size = new Size(178, 97);
+            game10Button.Size = new Size(164, 97);
             game10Button.TabIndex = 3;
             game10Button.Values.DropDownArrowColor = Color.Empty;
             game10Button.Values.Text = "";
@@ -179,7 +168,7 @@ namespace TickTackToe.View
             game00button.Dock = DockStyle.Fill;
             game00button.Location = new Point(3, 3);
             game00button.Name = "game00button";
-            game00button.Size = new Size(178, 97);
+            game00button.Size = new Size(164, 97);
             game00button.TabIndex = 0;
             game00button.Values.DropDownArrowColor = Color.Empty;
             game00button.Values.Text = "";
@@ -188,9 +177,9 @@ namespace TickTackToe.View
             // game02Button
             // 
             game02Button.Dock = DockStyle.Fill;
-            game02Button.Location = new Point(371, 3);
+            game02Button.Location = new Point(343, 3);
             game02Button.Name = "game02Button";
-            game02Button.Size = new Size(180, 97);
+            game02Button.Size = new Size(166, 97);
             game02Button.TabIndex = 1;
             game02Button.Values.DropDownArrowColor = Color.Empty;
             game02Button.Values.Text = "";
@@ -199,9 +188,9 @@ namespace TickTackToe.View
             // game01Button
             // 
             game01Button.Dock = DockStyle.Fill;
-            game01Button.Location = new Point(187, 3);
+            game01Button.Location = new Point(173, 3);
             game01Button.Name = "game01Button";
-            game01Button.Size = new Size(178, 97);
+            game01Button.Size = new Size(164, 97);
             game01Button.TabIndex = 2;
             game01Button.Values.DropDownArrowColor = Color.Empty;
             game01Button.Values.Text = "";
@@ -212,14 +201,16 @@ namespace TickTackToe.View
             statusTextBox.Dock = DockStyle.Fill;
             statusTextBox.Location = new Point(3, 70);
             statusTextBox.Name = "statusTextBox";
-            statusTextBox.Size = new Size(114, 309);
+            statusTextBox.Size = new Size(265, 309);
+            statusTextBox.StateCommon.Content.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             statusTextBox.TabIndex = 4;
             statusTextBox.Text = "";
             // 
             // timerTextBox
             // 
             timerTextBox.Anchor = AnchorStyles.None;
-            timerTextBox.Location = new Point(250, 16);
+            kryptonTableLayoutPanel1.SetColumnSpan(timerTextBox, 2);
+            timerTextBox.Location = new Point(244, 16);
             timerTextBox.MaximumSize = new Size(300, 0);
             timerTextBox.MaxLength = 300;
             timerTextBox.MinimumSize = new Size(300, 0);
@@ -262,7 +253,6 @@ namespace TickTackToe.View
         private Krypton.Toolkit.KryptonButton game00button;
         private Krypton.Toolkit.KryptonButton game02Button;
         private Krypton.Toolkit.KryptonButton game01Button;
-        private Krypton.Toolkit.KryptonLabel statusLabel;
         private Krypton.Toolkit.KryptonRichTextBox statusTextBox;
         private System.Windows.Forms.Timer gameTimer;
         private Krypton.Toolkit.KryptonTextBox timerTextBox;

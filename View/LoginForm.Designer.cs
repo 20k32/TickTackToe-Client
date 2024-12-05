@@ -40,39 +40,48 @@
             // 
             // kryptonLabel1
             // 
-            kryptonLabel1.Location = new Point(170, 139);
+            kryptonLabel1.LabelStyle = Krypton.Toolkit.LabelStyle.NormalControl;
+            kryptonLabel1.Location = new Point(83, 42);
             kryptonLabel1.Name = "kryptonLabel1";
-            kryptonLabel1.Size = new Size(46, 20);
+            kryptonLabel1.Size = new Size(100, 36);
+            kryptonLabel1.StateCommon.LongText.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            kryptonLabel1.StateCommon.ShortText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold);
             kryptonLabel1.TabIndex = 0;
             kryptonLabel1.Values.Text = "Name:";
             // 
             // kryptonLabel2
             // 
-            kryptonLabel2.Location = new Point(151, 180);
+            kryptonLabel2.Location = new Point(33, 86);
             kryptonLabel2.Name = "kryptonLabel2";
-            kryptonLabel2.Size = new Size(65, 20);
+            kryptonLabel2.Size = new Size(150, 36);
+            kryptonLabel2.StateCommon.ShortText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold);
             kryptonLabel2.TabIndex = 1;
             kryptonLabel2.Values.Text = "Password:";
             // 
             // userNameTextBlock
             // 
-            userNameTextBlock.Location = new Point(245, 136);
+            userNameTextBlock.Location = new Point(210, 40);
             userNameTextBlock.Name = "userNameTextBlock";
-            userNameTextBlock.Size = new Size(100, 23);
+            userNameTextBlock.Size = new Size(180, 38);
+            userNameTextBlock.StateCommon.Content.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            userNameTextBlock.StateNormal.Content.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold);
             userNameTextBlock.TabIndex = 2;
             // 
             // userPasswordMaskedTextBlock
             // 
-            userPasswordMaskedTextBlock.Location = new Point(245, 180);
+            userPasswordMaskedTextBlock.Location = new Point(210, 84);
             userPasswordMaskedTextBlock.Name = "userPasswordMaskedTextBlock";
-            userPasswordMaskedTextBlock.Size = new Size(100, 23);
+            userPasswordMaskedTextBlock.Size = new Size(180, 38);
+            userPasswordMaskedTextBlock.StateCommon.Content.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            userPasswordMaskedTextBlock.StateNormal.Content.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold);
             userPasswordMaskedTextBlock.TabIndex = 3;
             // 
             // loginButton
             // 
-            loginButton.Location = new Point(151, 235);
+            loginButton.Location = new Point(33, 140);
             loginButton.Name = "loginButton";
-            loginButton.Size = new Size(90, 25);
+            loginButton.Size = new Size(180, 51);
+            loginButton.StateCommon.Content.ShortText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             loginButton.TabIndex = 5;
             loginButton.Values.DropDownArrowColor = Color.Empty;
             loginButton.Values.Text = "Login";
@@ -80,9 +89,10 @@
             // 
             // registerButton
             // 
-            registerButton.Location = new Point(255, 235);
+            registerButton.Location = new Point(219, 140);
             registerButton.Name = "registerButton";
-            registerButton.Size = new Size(90, 25);
+            registerButton.Size = new Size(171, 51);
+            registerButton.StateCommon.Content.ShortText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             registerButton.TabIndex = 6;
             registerButton.Values.DropDownArrowColor = Color.Empty;
             registerButton.Values.Text = "Register";
@@ -90,29 +100,31 @@
             // 
             // statusLabel
             // 
-            statusLabel.Location = new Point(151, 277);
+            statusLabel.Location = new Point(33, 208);
             statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(47, 20);
+            statusLabel.Size = new Size(106, 36);
+            statusLabel.StateCommon.ShortText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold);
             statusLabel.TabIndex = 7;
             statusLabel.Values.Text = "Status:";
             // 
             // statusValueLabel
             // 
             statusValueLabel.AutoSize = false;
-            statusValueLabel.Font = new Font("Segoe UI", 9F);
+            statusValueLabel.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             statusValueLabel.ForeColor = Color.FromArgb(30, 57, 91);
             statusValueLabel.LabelStyle = Krypton.Toolkit.LabelStyle.AlternateControl;
-            statusValueLabel.Location = new Point(255, 277);
-            statusValueLabel.MaximumSize = new Size(200, 100);
-            statusValueLabel.MinimumSize = new Size(200, 100);
+            statusValueLabel.Location = new Point(160, 208);
+            statusValueLabel.MaximumSize = new Size(230, 130);
+            statusValueLabel.MinimumSize = new Size(230, 130);
             statusValueLabel.Name = "statusValueLabel";
-            statusValueLabel.Size = new Size(200, 100);
+            statusValueLabel.Size = new Size(230, 130);
+            statusValueLabel.StateCommon.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             // 
             // LoginForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(484, 461);
+            ClientSize = new Size(415, 353);
             Controls.Add(statusValueLabel);
             Controls.Add(statusLabel);
             Controls.Add(registerButton);
@@ -121,10 +133,11 @@
             Controls.Add(userNameTextBlock);
             Controls.Add(kryptonLabel2);
             Controls.Add(kryptonLabel1);
+            Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
-            MinimumSize = new Size(500, 500);
+            MinimumSize = new Size(431, 392);
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "LoginForm";

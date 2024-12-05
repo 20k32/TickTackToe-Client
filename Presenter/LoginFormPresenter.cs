@@ -1,5 +1,8 @@
 ﻿using Krypton.Toolkit;
+using Microsoft.Extensions.DependencyInjection;
+using Shared.Api.Models;
 using Shared.Api.Request;
+using Shared.Api.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TickTackToe.Model;
 using TickTackToe.Model.Helpers;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace TickTackToe.Presenter
 {
@@ -17,10 +21,23 @@ namespace TickTackToe.Presenter
     {
         private CancellationTokenSource cts;
         private KryptonWrapLabel statusValueLabel;
-
+        IServiceProvider _provider;
 
         public LoginFormPresenter(IServiceProvider provider) : base(provider)
         {
+            UserManager.NewUserEntryCreated += OnNewUserCreated;
+            _provider = provider;
+        }
+
+        private async void OnNewUserCreated()
+        {
+            var connectionWrapper = _provider.GetService<HubConnectionWrapper>();
+
+            if (connectionWrapper is not null && connectionWrapper.Connection is not null)
+            {
+                await connectionWrapper.Connection.DisposeAsync();
+                connectionWrapper.Connection = null;
+            }
         }
 
         public override void OnClosing(object sender, FormClosingEventArgs e)
@@ -53,20 +70,9 @@ namespace TickTackToe.Presenter
             try
             {
                 var responce = await ApiHelper.SendLoigRequestAsync(userAuthRequest, cts);
-                
-                if (!cts.IsCancellationRequested)
-                {
-                    if (responce.StatusCode == 200)
-                    {
-                        UserManager.Jwt = responce.Value.Token;
-                        UserManager.UserName = userName;
-                        UserManager.UserId = responce.Value.UserId;
-                    }
-
-                    statusValueLabel.Text = responce.Message;
-                }
+                await AssingToUserManagerAsync(cts, responce);
             }
-            catch (TaskCanceledException ex) { }
+            catch (TaskCanceledException) { }
 
         }
 
@@ -83,20 +89,39 @@ namespace TickTackToe.Presenter
             try
             {
                 var responce = await ApiHelper.SendRegisterRequestAsync(userAuthRequest, cts);
+                await AssingToUserManagerAsync(cts, responce);
+            }
+            catch (TaskCanceledException) { }
+        }
 
-                if (!cts.IsCancellationRequested)
+
+        private async Task AssingToUserManagerAsync(CancellationTokenSource cts, ApiResult<TokenResult> responce)
+        {
+            if (!cts.IsCancellationRequested)
+            {
+                if (responce.IsSuccessStatusCode)
                 {
-                    if (responce.StatusCode == 200)
-                    {
-                        UserManager.Jwt = responce.Value.Token;
-                        UserManager.UserName = userName;
-                        UserManager.UserId = responce.Value.UserId;
-                    }
+                    UserManager.Jwt = responce.Value.Token;
+                    UserManager.UserId = responce.Value.UserId;
+                    await LoadDataToUserManagerAsync(cts);
+                }
 
-                    statusValueLabel.Text = responce.Message;
+                statusValueLabel.Text = responce.Message;
+            }
+        }
+
+        private async Task LoadDataToUserManagerAsync(CancellationTokenSource cts)
+        {
+            var result = await ApiHelper.SendGetMyInfoRequestAsync(cts);
+            if (!cts.IsCancellationRequested)
+            {
+                if (result.IsSuccessStatusCode)
+                {
+                    UserManager.UserName = result.Value.UserName;
+                    UserManager.LocalGameHistory = result.Value.GameHistory;
+                    UserManager.Rating = result.Value.Rating;
                 }
             }
-            catch (TaskCanceledException ex) { }
         }
     }
 }

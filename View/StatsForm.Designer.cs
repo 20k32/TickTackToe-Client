@@ -29,14 +29,19 @@ namespace TickTackToe.View
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             RatingLabel = new Krypton.Toolkit.KryptonLabel();
-            CurrentRatingValue = new Krypton.Toolkit.KryptonLabel();
+            userRatingLabel = new Krypton.Toolkit.KryptonLabel();
             DisplayNameLabel = new Krypton.Toolkit.KryptonLabel();
-            DisplayNameValueLabel = new Krypton.Toolkit.KryptonLabel();
-            EmailLabel = new Krypton.Toolkit.KryptonLabel();
-            EmailValueLabel = new Krypton.Toolkit.KryptonLabel();
+            userNameLabel = new Krypton.Toolkit.KryptonLabel();
             ListOfGamesLabel = new Krypton.Toolkit.KryptonLabel();
-            kryptonListBox1 = new Krypton.Toolkit.KryptonListBox();
+            statsGrid = new Krypton.Toolkit.KryptonDataGridView();
+            OpponentColumn = new Krypton.Toolkit.KryptonDataGridViewTextBoxColumn();
+            RatingColumn = new Krypton.Toolkit.KryptonDataGridViewTextBoxColumn();
+            TimeTakenColumn = new Krypton.Toolkit.KryptonDataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)statsGrid).BeginInit();
             SuspendLayout();
             // 
             // RatingLabel
@@ -47,13 +52,13 @@ namespace TickTackToe.View
             RatingLabel.TabIndex = 0;
             RatingLabel.Values.Text = "Curent rating:";
             // 
-            // CurrentRatingValue
+            // userRatingLabel
             // 
-            CurrentRatingValue.Location = new Point(103, 12);
-            CurrentRatingValue.Name = "CurrentRatingValue";
-            CurrentRatingValue.Size = new Size(17, 20);
-            CurrentRatingValue.TabIndex = 1;
-            CurrentRatingValue.Values.Text = "0";
+            userRatingLabel.Location = new Point(103, 12);
+            userRatingLabel.Name = "userRatingLabel";
+            userRatingLabel.Size = new Size(17, 20);
+            userRatingLabel.TabIndex = 1;
+            userRatingLabel.Values.Text = "0";
             // 
             // DisplayNameLabel
             // 
@@ -63,57 +68,68 @@ namespace TickTackToe.View
             DisplayNameLabel.TabIndex = 2;
             DisplayNameLabel.Values.Text = "Display name:";
             // 
-            // DisplayNameValueLabel
+            // userNameLabel
             // 
-            DisplayNameValueLabel.Location = new Point(104, 38);
-            DisplayNameValueLabel.Name = "DisplayNameValueLabel";
-            DisplayNameValueLabel.Size = new Size(26, 20);
-            DisplayNameValueLabel.TabIndex = 3;
-            DisplayNameValueLabel.Values.Text = "___";
-            // 
-            // EmailLabel
-            // 
-            EmailLabel.Location = new Point(12, 64);
-            EmailLabel.Name = "EmailLabel";
-            EmailLabel.Size = new Size(42, 20);
-            EmailLabel.TabIndex = 4;
-            EmailLabel.Values.Text = "Email:";
-            // 
-            // EmailValueLabel
-            // 
-            EmailValueLabel.Location = new Point(104, 64);
-            EmailValueLabel.Name = "EmailValueLabel";
-            EmailValueLabel.Size = new Size(26, 20);
-            EmailValueLabel.TabIndex = 5;
-            EmailValueLabel.Values.Text = "___";
+            userNameLabel.Location = new Point(104, 38);
+            userNameLabel.Name = "userNameLabel";
+            userNameLabel.Size = new Size(26, 20);
+            userNameLabel.TabIndex = 3;
+            userNameLabel.Values.Text = "___";
             // 
             // ListOfGamesLabel
             // 
-            ListOfGamesLabel.Location = new Point(12, 90);
+            ListOfGamesLabel.Location = new Point(12, 64);
             ListOfGamesLabel.Name = "ListOfGamesLabel";
             ListOfGamesLabel.Size = new Size(50, 20);
             ListOfGamesLabel.TabIndex = 6;
             ListOfGamesLabel.Values.Text = "Games:";
             // 
-            // kryptonListBox1
+            // statsGrid
             // 
-            kryptonListBox1.Location = new Point(12, 116);
-            kryptonListBox1.Name = "kryptonListBox1";
-            kryptonListBox1.Size = new Size(460, 333);
-            kryptonListBox1.TabIndex = 7;
+            statsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            statsGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            statsGrid.BorderStyle = BorderStyle.None;
+            statsGrid.Columns.AddRange(new DataGridViewColumn[] { OpponentColumn, RatingColumn, TimeTakenColumn });
+            statsGrid.Location = new Point(12, 104);
+            statsGrid.Name = "statsGrid";
+            statsGrid.Size = new Size(460, 345);
+            statsGrid.TabIndex = 7;
+            // 
+            // OpponentColumn
+            // 
+            OpponentColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            OpponentColumn.HeaderText = "Opponent";
+            OpponentColumn.Name = "OpponentColumn";
+            OpponentColumn.ReadOnly = true;
+            OpponentColumn.Resizable = DataGridViewTriState.True;
+            OpponentColumn.Width = 140;
+            // 
+            // RatingColumn
+            // 
+            RatingColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            RatingColumn.HeaderText = "Points received";
+            RatingColumn.Name = "RatingColumn";
+            RatingColumn.ReadOnly = true;
+            RatingColumn.Width = 139;
+            // 
+            // TimeTakenColumn
+            // 
+            TimeTakenColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            TimeTakenColumn.HeaderText = "TimeTaken";
+            TimeTakenColumn.Name = "TimeTakenColumn";
+            TimeTakenColumn.ReadOnly = true;
+            TimeTakenColumn.Width = 140;
             // 
             // StatsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(484, 461);
-            Controls.Add(kryptonListBox1);
+            Controls.Add(statsGrid);
             Controls.Add(ListOfGamesLabel);
-            Controls.Add(EmailValueLabel);
-            Controls.Add(EmailLabel);
-            Controls.Add(DisplayNameValueLabel);
+            Controls.Add(userNameLabel);
             Controls.Add(DisplayNameLabel);
-            Controls.Add(CurrentRatingValue);
+            Controls.Add(userRatingLabel);
             Controls.Add(RatingLabel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
@@ -122,6 +138,7 @@ namespace TickTackToe.View
             Name = "StatsForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "StatsForm";
+            ((System.ComponentModel.ISupportInitialize)statsGrid).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -129,12 +146,13 @@ namespace TickTackToe.View
         #endregion
 
         private Krypton.Toolkit.KryptonLabel RatingLabel;
-        private Krypton.Toolkit.KryptonLabel CurrentRatingValue;
+        private Krypton.Toolkit.KryptonLabel userRatingLabel;
         private Krypton.Toolkit.KryptonLabel DisplayNameLabel;
-        private Krypton.Toolkit.KryptonLabel DisplayNameValueLabel;
-        private Krypton.Toolkit.KryptonLabel EmailLabel;
-        private Krypton.Toolkit.KryptonLabel EmailValueLabel;
+        private Krypton.Toolkit.KryptonLabel userNameLabel;
         private Krypton.Toolkit.KryptonLabel ListOfGamesLabel;
-        private Krypton.Toolkit.KryptonListBox kryptonListBox1;
+        private Krypton.Toolkit.KryptonDataGridView statsGrid;
+        private Krypton.Toolkit.KryptonDataGridViewTextBoxColumn OpponentColumn;
+        private Krypton.Toolkit.KryptonDataGridViewTextBoxColumn RatingColumn;
+        private Krypton.Toolkit.KryptonDataGridViewTextBoxColumn TimeTakenColumn;
     }
 }

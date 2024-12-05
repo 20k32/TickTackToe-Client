@@ -108,6 +108,37 @@ namespace TickTackToe.Model.Helpers
             }
         }
 
+        public static async Task<ApiResult<UserDto>> SendUpdateMyInfo(UserDto info, CancellationTokenSource cts)
+        {
+            ApiResult<UserDto> result = null;
+
+            using (var httpClient = HttpClientHelper.CreateAuthorizedClient())
+            {
+                try
+                {
+                    var resultRaw = await httpClient.PutAsJsonAsync("api/users/my", info);
+
+                    var json = await resultRaw.Content.ReadAsStringAsync(cts.Token);
+
+                    if (resultRaw.IsSuccessStatusCode)
+                    {
+                        result = JsonConvert.DeserializeObject<ApiResult<UserDto>>(json);
+                    }
+                    else
+                    {
+                        var tempResult = JsonConvert.DeserializeObject<PlainResult>(json);
+                        result = new(null, tempResult.Message, tempResult.StatusCode);
+                    }
+                }
+                catch
+                {
+                    result = new(null, "Server not responds at the current moment, please try later.", -1);
+                }
+
+                return result;
+            }
+        }
+
         public static async Task<PlainResult> SendAddToPoolRequestAsync(CancellationTokenSource cts)
         {
             PlainResult result;
@@ -116,7 +147,7 @@ namespace TickTackToe.Model.Helpers
             {
                 try
                 {
-                    var resultRaw = await httpClient.PutAsync($"api/game/pool/{UserManager.UserName}", null);
+                    var resultRaw = await httpClient.PutAsync($"api/game/pool", null);
 
                     var json = await resultRaw.Content.ReadAsStringAsync(cts.Token);
                     result = JsonConvert.DeserializeObject<PlainResult>(json);

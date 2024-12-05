@@ -29,7 +29,7 @@ namespace TickTackToe.Model
 
         public event Action<bool, int, int> FieldChangedByMe;
         public event Action FieldIsFull;
-        public event Action<TickTackType> GameEnded;
+        public event Action<TickTackType> GameEndedWithWinner;
         public event Action Draw;
 
         public GameCore()
@@ -169,7 +169,7 @@ namespace TickTackToe.Model
             {
                 var turn = DefineWinnerTurn();
 
-                GameEnded.Invoke(turn);
+                GameEndedWithWinner.Invoke(turn);
 
                 return true;
             }

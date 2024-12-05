@@ -22,6 +22,7 @@ namespace TickTackToe.Presenter
 {
     internal sealed class GameFormPresenter : PresenterBase
     {
+        private static bool _isNewUserEntry = true;
         private static bool _isFirstInit = true;
 
         private bool _isGameEndedMessageReceived;
@@ -30,28 +31,41 @@ namespace TickTackToe.Presenter
         private bool _isExitRequestApproved;
         private bool _isGameStarted;
 
-        private GameChangedParameter _gameState;
         private string _senderId;
+        private string _senderUserName;
+
+        private GameChangedParameter _gameState;
         private GameCore _game;
+
         private KryptonButton[,] _buttons;
         private KryptonRichTextBox _logBox;
-        private HubConnection _connection;
+        private KryptonTextBox _timerTexBox;
+
+        private HubConnectionWrapper _connectionWrapper;
+        
         private System.Threading.Timer _gameTimer;
         private Stopwatch _stopwatch;
-        private KryptonTextBox _timerTexBox;
+        
         private CancellationTokenSource _cancellationSource;
         
 
         public GameFormPresenter(IServiceCollection collection) : base(collection.BuildServiceProvider())
         {
+            UserManager.NewUserEntryCreated += OnNewUserCreated;
+
             _game = ServiceProvider.GetService<GameCore>();
             _game.FieldChangedByMe += OnFieldChangedByMe;
-            _game.GameEnded += OnGameEnded;
+            _game.GameEndedWithWinner += OnGameEnded;
 
-            _connection = ServiceProvider.GetService<HubConnection>();
+            _connectionWrapper = ServiceProvider.GetService<HubConnectionWrapper>();
 
             _cancellationSource = new();
             _stopwatch = new();
+        }
+
+        private static void OnNewUserCreated()
+        {
+            _isNewUserEntry = true;
         }
 
         private void ExitRequested(bool isExitRequestApproved)
@@ -73,7 +87,7 @@ namespace TickTackToe.Presenter
             });
         }
 
-        private void OnGameEnded(TickTackType type)
+        private async void OnGameEnded(TickTackType type)
         {
             if(!_isGameEndedMessageReceived)
             {
@@ -85,19 +99,35 @@ namespace TickTackToe.Presenter
                 var bonusPoints = _game.DefineBonus(_stopwatch.Elapsed.TotalMinutes);
                 var totalPoints = bonusPoints * points;
 
-                if (isMeWinner)
+                if (!isMeWinner)
                 {
-                    UserManager.Rating += totalPoints;
+                    totalPoints *= -1;
                 }
-                else
-                {
-                    UserManager.Rating -= totalPoints;
-                }
+
+                UserManager.Rating += totalPoints;
+
+                var gameHistory = new GameHistoryDto(_timerTexBox.Text, _senderUserName, totalPoints);
+                UserManager.LocalGameHistory.Add(gameHistory);
 
                 var winnerString = isMeWinner ? "win" : "loose";
                 _logBox.Text += $"\nGame Ended! You {winnerString}. Your rating: {UserManager.Rating}";
 
                 DisposeInternal();
+
+                var existingUserRequest = await ApiHelper.SendGetMyInfoRequestAsync(_cancellationSource);
+
+                existingUserRequest.Value.Rating = UserManager.Rating;
+                existingUserRequest.Value.GameHistory = UserManager.LocalGameHistory;
+
+                if (existingUserRequest.IsSuccessStatusCode)
+                {
+                    var updateRequest = await ApiHelper.SendUpdateMyInfo(existingUserRequest.Value, _cancellationSource);
+
+                    if (!updateRequest.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show(updateRequest.Message, "Failed to update your data.");
+                    }
+                }
             }
         }
 
@@ -143,7 +173,7 @@ namespace TickTackToe.Presenter
             var parameter = _game.SaveState();
             parameter.ToUserId = _senderId;
 
-            await _connection.SendAsync("GameHappening", parameter);
+            await _connectionWrapper.Connection.SendAsync("GameHappening", parameter);
 
             _logBox.Invoke(() =>
             {
@@ -215,7 +245,7 @@ namespace TickTackToe.Presenter
 
         private void ApproveExitRequest()
         {
-            _connection.SendAsync("ExitRequestApproved", _senderId);
+            _connectionWrapper.Connection.SendAsync("ExitRequestApproved", _senderId);
         }
 
         private void ExitCore(KryptonForm form)
@@ -228,12 +258,12 @@ namespace TickTackToe.Presenter
 
         private void SendExitRequest()
         {
-            _connection.SendAsync("ExitRequest", _senderId);
+            _connectionWrapper.Connection.SendAsync("ExitRequest", _senderId);
         }
 
         public override async void OnLoaded(object sender, EventArgs e)
         {
-            if(_connection is null)
+            if(_connectionWrapper?.Connection is null)
             {
                 MessageBox.Show("Connection is not initialized yet, re-enter game window.", "Failed to connect");
                 var form = (KryptonForm)sender;
@@ -241,16 +271,16 @@ namespace TickTackToe.Presenter
             }
             else
             {
-                if (_isFirstInit)
+                if (_isFirstInit || _isNewUserEntry)
                 {
                     _isFirstInit = false;
+                    _isNewUserEntry = false;
 
-                    _connection.On<GameStartParameters>("OnStartMessage", GameStart);
-                    _connection.On<GameChangedParameter>("OnGameHappening", LoadGameState);
-                    _connection.On<bool>("OnExitRequested", ExitRequested);
-                    _connection.On<bool>("OnExitApproved", ExitApproved);
+                    _connectionWrapper.Connection.On<GameStartParameters>("OnStartMessage", GameStart);
+                    _connectionWrapper.Connection.On<GameChangedParameter>("OnGameHappening", LoadGameState);
+                    _connectionWrapper.Connection.On<bool>("OnExitRequested", ExitRequested);
+                    _connectionWrapper.Connection.On<bool>("OnExitApproved", ExitApproved);
                 }
-                
 
                 _isGameEndedMessageReceived = false;
                 _isExitRequestApproved = false;
@@ -282,6 +312,7 @@ namespace TickTackToe.Presenter
             {
                 _isGameStarted = true;
 
+                _senderUserName = parameters.SenderUserName;
                 _senderId = parameters.SenderId;
 
                 _logBox.Text += $"{parameters.SenderUserName}: {parameters.Message}";

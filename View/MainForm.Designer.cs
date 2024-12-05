@@ -101,6 +101,7 @@ namespace TickTackToe
             showInfoButton.Name = "showInfoButton";
             showInfoButton.Size = new Size(80, 80);
             showInfoButton.StateCommon.Border.Rounding = 80F;
+            showInfoButton.StateCommon.Content.ShortText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             showInfoButton.TabIndex = 2;
             showInfoButton.Values.DropDownArrowColor = Color.Empty;
             showInfoButton.Values.Text = "Info";
@@ -112,6 +113,7 @@ namespace TickTackToe
             logRichTextBox.Name = "logRichTextBox";
             logRichTextBox.ReadOnly = true;
             logRichTextBox.Size = new Size(321, 138);
+            logRichTextBox.StateCommon.Content.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             logRichTextBox.TabIndex = 3;
             logRichTextBox.Text = "";
             // 
@@ -133,6 +135,7 @@ namespace TickTackToe
             showStatsButton.Name = "showStatsButton";
             showStatsButton.Size = new Size(333, 77);
             showStatsButton.StateCommon.Border.Rounding = 25F;
+            showStatsButton.StateCommon.Content.ShortText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             showStatsButton.TabIndex = 1;
             showStatsButton.Values.DropDownArrowColor = Color.Empty;
             showStatsButton.Values.Text = "Show Stats";
@@ -145,6 +148,7 @@ namespace TickTackToe
             playButton.Name = "playButton";
             playButton.Size = new Size(333, 77);
             playButton.StateCommon.Border.Rounding = 25F;
+            playButton.StateCommon.Content.ShortText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             playButton.TabIndex = 0;
             playButton.Values.DropDownArrowColor = Color.Empty;
             playButton.Values.Text = "Play";
@@ -156,6 +160,8 @@ namespace TickTackToe
             logListBox.Location = new Point(336, 159);
             logListBox.Name = "logListBox";
             logListBox.Size = new Size(461, 288);
+            logListBox.StateCommon.Item.Content.LongText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            logListBox.StateCommon.Item.Content.ShortText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             logListBox.TabIndex = 7;
             // 
             // kryptonTableLayoutPanel2
@@ -183,6 +189,7 @@ namespace TickTackToe
             loginButton.Name = "loginButton";
             loginButton.Size = new Size(80, 80);
             loginButton.StateCommon.Border.Rounding = 80F;
+            loginButton.StateCommon.Content.ShortText.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             loginButton.TabIndex = 2;
             loginButton.ToolTipValues.Description = "Login or signup";
             loginButton.ToolTipValues.EnableToolTips = true;
